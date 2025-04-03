@@ -36,11 +36,11 @@
         <button class="login btn hidden-sm" @click="goLogin()">登录</button>
       </template>
 
-      <div class="right-icon" @click="msgVisible=true">
+      <!-- <div class="right-icon" @click="msgVisible=true">
         <img :src="MessageIcon">
         <span class="msg-point" style=""></span>
-      </div>
-      <div>
+      </div> -->
+      <!-- <div> -->
         <a-drawer
             title="我的消息"
             placement="right"
@@ -73,7 +73,7 @@
             </div>
           </a-spin>
         </a-drawer>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -143,7 +143,7 @@ const onClose = () => {
   position: fixed;
   top: 0;
   left: 0;
-  height: 56px;
+  height: 100px;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #cedce4;
@@ -151,8 +151,9 @@ const onClose = () => {
   z-index: 16;
   display: flex;
   flex-direction: row;
-  //justify-content: center; /*水平居中*/
+  justify-content: center; /*水平居中*/
   align-items: center; /*垂直居中*/
+  // align-items: flex-end; /*垂直靠底*/
 }
 
 .logo {
@@ -198,11 +199,11 @@ const onClose = () => {
 
 .right-view {
   padding-right: 36px;
-  flex:1;
+  // flex:1;
   display: flex;
   flex-direction: row;
   gap: 20px;
-  justify-content: flex-end; /* 内容右对齐 */
+  justify-content: center; /* 内容右对齐 */
 
   .username {
     height: 32px;
