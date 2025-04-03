@@ -1,6 +1,21 @@
-
-server.port: 9100
-server.servlet.context-path: /api
+server:
+  port: 8000
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: book
+  datasource:
+    url: jdbc:mysql://localhost:3306/book?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
+    type:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    druid:
+      initial-size: 3
+      min-idle: 3
+      max-active: 3
+      max-wait: 3000
 
 BASE_LOCATION: D:\projects\java_book
 DB_NAME: java_book
@@ -9,7 +24,7 @@ springfox:
   documentation:
     swagger-ui:
       # 生产环境需要关闭
-      enabled: true
+      enabled: false
 
 
 
