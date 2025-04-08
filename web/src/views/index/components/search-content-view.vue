@@ -85,7 +85,8 @@ const getThingList = (data) => {
   listThingList(data).then(res => {
     res.data.forEach((item, index) => {
       if (item.cover) {
-        item.cover = BASE_URL + '/api/staticfiles/image/' + item.cover
+        // item.cover = BASE_URL + '/api/staticfiles/image/' + item.cover
+        item.cover = item.cover
       }
     })
     tData.thingData = res.data
@@ -169,8 +170,8 @@ const getThingList = (data) => {
     width: 255px;
 
     img {
-      height: 200px;
-      width: 186px;
+      height: 210px;
+      width: 150px;
       margin: 0 auto;
       background-size: contain;
     }

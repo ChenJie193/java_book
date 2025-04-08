@@ -29,7 +29,7 @@
                  </div>
                </div>
              </div>
-             <div class="thing-counts hidden-sm">
+             <!-- <div class="thing-counts hidden-sm">
                <div class="count-item flex-view pointer" @click="addToWish()">
                  <div class="count-img">
                    <img :src="WantIcon">
@@ -70,7 +70,7 @@
                    </div>
                  </div>
                </div>
-             </div>
+             </div> -->
            </div>
            <div class="buy-way hidden-sm">
              <div class="title">借阅区域</div>
@@ -161,7 +161,7 @@
              </div>
  
            </div>
-           <div class="recommend" style="">
+           <!-- <div class="recommend" style="">
              <div class="title">热门推荐</div>
              <div class="things">
                <div class="thing-item thing-item" v-for="item in recommendData" @click="handleDetail(item)">
@@ -172,7 +172,7 @@
                  </div>
                </div>
              </div>
-           </div>
+           </div> -->
          </div>
        </div>
      </div>

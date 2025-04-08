@@ -158,7 +158,8 @@ const getThingList = (data) => {
     contentData.loading = false
     res.data.forEach((item, index) => {
       if (item.cover) {
-        item.cover = BASE_URL + '/api/staticfiles/image/' +  item.cover
+        // item.cover = BASE_URL + '/api/staticfiles/image/' +  item.cover
+        item.cover = item.cover
       }
     })
     console.log(res)
