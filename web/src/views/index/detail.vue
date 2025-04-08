@@ -235,7 +235,7 @@ const selectTab =(index)=> {
 const getThingDetail =()=> {
   detailApi({id: thingId.value}).then(res => {
     detailData.value = res.data
-    detailData.value.cover = BASE_URL + '/api/staticfiles/image/' + detailData.value.cover
+    detailData.value.cover = detailData.value.cover
   }).catch(err => {
     message.error('获取详情失败')
   })
@@ -375,7 +375,7 @@ const sortCommentList =(sortType)=> {
 
 .thing-infos-view {
   display: flex;
-  margin: 89px 0 40px;
+  margin: 140px 0 40px;
   overflow: hidden;
 
   .thing-infos {
@@ -432,8 +432,8 @@ const sortCommentList =(sortType)=> {
     margin: 0 40px 0 0;
 
     img {
-      width: 200px;
-      height: 186px;
+      width: 150px;
+      height: 210px;
       display: block;
     }
   }
