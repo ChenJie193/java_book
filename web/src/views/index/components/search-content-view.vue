@@ -118,7 +118,7 @@ const getThingList = (data) => {
   color: #152844;
   text-align: center;
   position: fixed;
-  top: 56px;
+  top: 80px;
   left: 0;
   z-index: 1;
   width: calc(100% - 8px);

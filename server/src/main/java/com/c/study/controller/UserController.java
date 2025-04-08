@@ -62,13 +62,12 @@ public class UserController {
         }
     }
 
-    // 普通用户登录
+    // 用户登录
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     public APIResponse userLogin(User user){
         user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword() + salt).getBytes()));
         User responseUser =  userService.getNormalUser(user);
         if(responseUser != null) {
-            // 加积分
             responseUser.setScore(String.valueOf(Integer.parseInt(responseUser.getScore()) + 10));
             userService.updateUser(responseUser);
             return new APIResponse(ResponeCode.SUCCESS, "查询成功", responseUser);
