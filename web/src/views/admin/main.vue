@@ -14,10 +14,10 @@
       <a-layout-sider v-model="collapsed" collapsible>
         <a-menu style="overflow:auto; overflow-x: hidden;" v-model:selectedKeys="selectedKeys" theme="light"
                 mode="inline" @click="handleClick">
-          <!-- <a-menu-item key="overview">
+          <a-menu-item key="overview">
             <home-outlined/>
             <span>总览</span>
-          </a-menu-item> -->
+          </a-menu-item>
           <a-menu-item key="borrow">
             <control-outlined/>
             <span>借阅管理</span>

@@ -46,7 +46,7 @@ export default {
   //background-color: #2a9a44;
   max-width: 1200px;
   min-width: 800px;
-  margin: 80px auto;
+  margin: 120px auto;
   .user-content-left {
   }
   .user-content-right{

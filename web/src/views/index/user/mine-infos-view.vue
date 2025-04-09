@@ -12,7 +12,7 @@
     </div>
     <div class="counts-view">
       <div class="counts flex-view">
-        <div class="fans-box flex-item" @click="clickMenu('collectThingView')">
+        <!-- <div class="fans-box flex-item" @click="clickMenu('collectThingView')">
           <div class="text">收藏</div>
           <div class="num">{{collectCount}}</div>
         </div>
@@ -21,7 +21,7 @@
         <div class="follow-box flex-item" @click="clickMenu('wishThingView')">
           <div class="text">心愿单</div>
           <div class="num">{{wishCount}}</div>
-        </div>
+        </div> -->
 <!--        <div class="split-line">-->
 <!--        </div>-->
 <!--        <div class="points-box flex-item">-->
@@ -41,14 +41,14 @@
           <img :src="CommentIconImg">
           <span>我的评论</span>
         </div>
-        <div class="mine-item flex-view" @click="clickMenu('addressView')">
+        <!-- <div class="mine-item flex-view" @click="clickMenu('addressView')">
           <img :src="AddressIconImage">
           <span>地址管理</span>
         </div>
         <div class="mine-item flex-view" @click="clickMenu('scoreView')">
           <img :src="PointIconImage">
           <span>我的积分</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="setting-box">
@@ -62,14 +62,14 @@
           <img :src="SafeIconImage" alt="账号安全">
           <span>账号安全</span>
         </div>
-        <div class="mine-item flex-view" @click="clickMenu('pushView')">
+        <!-- <div class="mine-item flex-view" @click="clickMenu('pushView')">
           <img :src="PushIconImage" alt="推送设置">
           <span>推送设置</span>
         </div>
         <div class="mine-item flex-view" @click="clickMenu('messageView')">
           <img :src="MessageIconImage" alt="消息管理">
           <span>消息管理</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import AvatarImg from '/@/assets/images/avatar.jpg'
 import MyOrderImg from '/@/assets/images/order-icon.svg'
-import CommentIconImg from '/@/assets/images/order-thing-icon.svg'
+import CommentIconImg from '/@/assets/images/order-comment-icon.svg'
 import AddressIconImage from '/@/assets/images/order-address-icon.svg'
 import PointIconImage from '/@/assets/images/order-point-icon.svg'
 import SettingIconImage from '/@/assets/images/setting-icon.svg'
