@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
 
 @Data
-@TableName("b_user")
+@TableName("tb_user")
 public class User implements Serializable {
     public static final int NormalUser = 1;
     public static final int DemoUser = 2;

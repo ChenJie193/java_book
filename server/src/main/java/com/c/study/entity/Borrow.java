@@ -9,7 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("b_borrow")
+@TableName("tb_borrow")
 public class Borrow implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     public Long id;

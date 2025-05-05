@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Data
-@TableName("b_classification")
+@TableName("tb_classification")
 public class Classification implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     public Long id;

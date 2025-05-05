@@ -47,14 +47,13 @@ public class BorrowController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public APIResponse create(Borrow borrow) throws IOException {
-
 
         long expectTime = System.currentTimeMillis() + (long) 30 * 24 * 60 * 60 * 1000;
         borrow.setExpectTime(String.valueOf(expectTime));
-        borrow.setStatus("1"); // 借入
-        borrow.setHasDelayed("0"); // 没延期
+        borrow.setStatus("1");
+        borrow.setHasDelayed("0");
         if(StringUtils.isNotBlank(borrow.getThingId()) && StringUtils.isNotBlank(borrow.getUserId())){
             service.createBorrow(borrow);
             // 库存-1

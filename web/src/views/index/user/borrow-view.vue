@@ -113,7 +113,7 @@ const getDataList= ()=> {
   userBorrowListApi({userId: userId, status: borrowStatus.value}).then(res => {
     res.data.forEach((item, index) => {
       if (item.cover) {
-        item.cover = BASE_URL + '/api/staticfiles/image/' + item.cover
+        item.cover = item.cover
       }
     })
     borrowData.value = res.data
