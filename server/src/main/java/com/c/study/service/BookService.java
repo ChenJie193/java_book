@@ -5,14 +5,14 @@ import com.c.study.entity.Book;
 
 import java.util.List;
 
-public interface ThingService {
+public interface BookService {
     List<Book> getThingList(String keyword, String sort, String c, String tag);
-    void createThing(Book book);
-    void deleteThing(String id);
+    void createBook(Book book);
+    void deleteBook(String id);
 
-    void updateThing(Book book);
+    void updateBook(Book book);
 
-    Book getThingById(String id);
+    Book getBookById(String id);
 
     void addWishCount(String thingId);
 

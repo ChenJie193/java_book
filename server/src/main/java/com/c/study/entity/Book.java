@@ -14,52 +14,52 @@ import java.util.List;
 @TableName("tb_book")
 public class Book implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
-    public Long id;
+    private Long id;
     @TableField
-    public String title;
+    private String title;
     @TableField
-    public String cover;
+    private String cover;
     @TableField
-    public String description;
+    private String description;
     @TableField
-    public String price;
+    private String price;
     @TableField
-    public String status;
+    private String status;
     @TableField
-    public String createTime;
+    private String createTime;
     @TableField
-    public String repertory;
+    private String repertory;
     @TableField
-    public String translator;
+    private String translator;
     @TableField
-    public String isbn;
+    private String isbn;
     @TableField
-    public String layout;
+    private String layout;
     @TableField
-    public String author;
+    private String author;
     @TableField
-    public String press;
+    private String press;
     @TableField
-    public String pubDate;
+    private String pubDate;
     @TableField
-    public String score;
+    private String score;
     @TableField
-    public String pageCount;
+    private String pageCount;
     @TableField
-    public String pv;
+    private String pv;
     @TableField
-    public String recommendCount;
+    private String recommendCount;
     @TableField
-    public String wishCount;
+    private String wishCount;
     @TableField
-    public String collectCount;
+    private String collectCount;
     @TableField
-    public Long classificationId;
+    private Long classificationId;
 
     @TableField(exist = false)
-    public List<Long> tags; // 标签
+    private List<Long> tags; // 标签
 
     @TableField(exist = false)
-    public MultipartFile imageFile;
+    private String imageFile;
 
 }

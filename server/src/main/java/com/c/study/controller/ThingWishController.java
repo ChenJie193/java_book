@@ -5,7 +5,7 @@ import com.c.study.common.ResponeCode;
 import com.c.study.entity.ThingWish;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
-import com.c.study.service.ThingService;
+import com.c.study.service.BookService;
 import com.c.study.service.ThingWishService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class ThingWishController {
     ThingWishService thingWishService;
 
     @Autowired
-    ThingService thingService;
+    BookService bookService;
 
     @Access(level = AccessLevel.LOGIN)
     @RequestMapping(value = "/wish", method = RequestMethod.POST)
@@ -39,7 +39,7 @@ public class ThingWishController {
             return new APIResponse(ResponeCode.SUCCESS, "您已添加过了");
         }else {
             thingWishService.createThingWish(thingWish);
-            thingService.addWishCount(thingWish.getThingId());
+            bookService.addWishCount(thingWish.getThingId());
         }
         return new APIResponse(ResponeCode.SUCCESS, "添加成功");
     }

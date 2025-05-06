@@ -2,12 +2,15 @@ package com.c.study.controller;
 
 import com.c.study.common.APIResponse;
 import com.c.study.common.ResponeCode;
+import com.c.study.document.DocBook;
 import com.c.study.entity.Book;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
-import com.c.study.service.ThingService;
+import com.c.study.repository.BookRepository;
+import com.c.study.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +26,15 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/thing")
+@RequestMapping("/book")
 public class BookController {
 
     private final static Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
-    ThingService service;
+    private BookService service;
+    @Autowired
+    private BookRepository bookRepository;
 
     @Value("${File.uploadPath}")
     private String uploadPath;
@@ -43,7 +48,7 @@ public class BookController {
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public APIResponse detail(String id){
-        Book book =  service.getThingById(id);
+        Book book =  service.getBookById(id);
 
         return new APIResponse(ResponeCode.SUCCESS, "查询成功", book);
     }
@@ -52,12 +57,11 @@ public class BookController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @Transactional
     public APIResponse create(Book book) throws IOException {
-        String url = saveThing(book);
-        if(!StringUtils.isEmpty(url)) {
-            book.cover = url;
-        }
+        DocBook docBook = new DocBook();
 
-        service.createThing(book);
+        service.createBook(book);
+        BeanUtils.copyProperties(book,docBook);
+        DocBook save = bookRepository.save(docBook);
         return new APIResponse(ResponeCode.SUCCESS, "创建成功");
     }
 
@@ -68,7 +72,7 @@ public class BookController {
         // 批量删除
         String[] arr = ids.split(",");
         for (String id : arr) {
-            service.deleteThing(id);
+            service.deleteBook(id);
         }
         return new APIResponse(ResponeCode.SUCCESS, "删除成功");
     }
@@ -77,36 +81,17 @@ public class BookController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @Transactional
     public APIResponse update(Book book) throws IOException {
+        DocBook docBook = new DocBook();
         System.out.println(book);
-        String url = saveThing(book);
-        if(!StringUtils.isEmpty(url)) {
-            book.cover = url;
-        }
+//        String url = saveBook(book);
+//        if(!StringUtils.isEmpty(url)) {
+//            book.setCover(url);
+//        }
 
-        service.updateThing(book);
+        service.updateBook(book);
+        BeanUtils.copyProperties(book, docBook);
+        bookRepository.save(docBook);
         return new APIResponse(ResponeCode.SUCCESS, "更新成功");
-    }
-
-    public String saveThing(Book book) throws IOException {
-        MultipartFile file = book.getImageFile();
-        String newFileName = null;
-        if(file !=null && !file.isEmpty()) {
-
-            // 存文件
-            String oldFileName = file.getOriginalFilename();
-            String randomStr = UUID.randomUUID().toString();
-            newFileName = randomStr + oldFileName.substring(oldFileName.lastIndexOf("."));
-            String filePath = uploadPath + File.separator + "image" + File.separator + newFileName;
-            File destFile = new File(filePath);
-            if(!destFile.getParentFile().exists()){
-                destFile.getParentFile().mkdirs();
-            }
-            file.transferTo(destFile);
-        }
-        if(!StringUtils.isEmpty(newFileName)) {
-            book.cover = newFileName;
-        }
-        return newFileName;
     }
 
 }

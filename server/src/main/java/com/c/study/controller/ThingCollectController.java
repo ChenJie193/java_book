@@ -6,7 +6,7 @@ import com.c.study.entity.ThingCollect;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
 import com.c.study.service.ThingCollectService;
-import com.c.study.service.ThingService;
+import com.c.study.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ThingCollectController {
     ThingCollectService thingCollectService;
 
     @Autowired
-    ThingService thingService;
+    BookService bookService;
 
     @Access(level = AccessLevel.LOGIN)
     @RequestMapping(value = "/collect", method = RequestMethod.POST)
@@ -39,7 +39,7 @@ public class ThingCollectController {
             return new APIResponse(ResponeCode.SUCCESS, "您已收藏过了");
         }else {
             thingCollectService.createThingCollect(thingCollect);
-            thingService.addCollectCount(thingCollect.getThingId());
+            bookService.addCollectCount(thingCollect.getThingId());
         }
         return new APIResponse(ResponeCode.SUCCESS, "收藏成功");
     }

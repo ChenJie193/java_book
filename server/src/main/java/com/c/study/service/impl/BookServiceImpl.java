@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.c.study.entity.Book;
 import com.c.study.entity.ThingTag;
-import com.c.study.mapper.ThingMapper;
+import com.c.study.mapper.BookMapper;
 import com.c.study.mapper.ThingTagMapper;
-import com.c.study.service.ThingService;
+import com.c.study.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ThingServiceImpl extends ServiceImpl<ThingMapper, Book> implements ThingService {
+public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements BookService {
     @Autowired
-    ThingMapper mapper;
+    BookMapper mapper;
 
     @Autowired
     ThingTagMapper thingTagMapper;
@@ -79,7 +79,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Book> implements 
     }
 
     @Override
-    public void createThing(Book book) {
+    public void createBook(Book book) {
         System.out.println(book);
         book.setCreateTime(String.valueOf(System.currentTimeMillis()));
 
@@ -98,12 +98,12 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Book> implements 
     }
 
     @Override
-    public void deleteThing(String id) {
+    public void deleteBook(String id) {
         mapper.deleteById(id);
     }
 
     @Override
-    public void updateThing(Book book) {
+    public void updateBook(Book book) {
 
         // 更新tag
         setThingTags(book);
@@ -112,7 +112,7 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Book> implements 
     }
 
     @Override
-    public Book getThingById(String id) {
+    public Book getBookById(String id) {
         return mapper.selectById(id);
     }
 

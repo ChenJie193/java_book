@@ -8,7 +8,7 @@ import com.c.study.entity.Borrow;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
 import com.c.study.service.BorrowService;
-import com.c.study.service.ThingService;
+import com.c.study.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class BorrowController {
     BorrowService service;
 
     @Autowired
-    ThingService thingService;
+    BookService bookService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public APIResponse list(){
@@ -57,12 +57,12 @@ public class BorrowController {
         if(StringUtils.isNotBlank(borrow.getThingId()) && StringUtils.isNotBlank(borrow.getUserId())){
             service.createBorrow(borrow);
             // 库存-1
-            Book book = thingService.getThingById(borrow.getThingId());
+            Book book = bookService.getBookById(borrow.getThingId());
             if(Integer.parseInt(book.getRepertory()) <= 0){
                 return new APIResponse(ResponeCode.FAIL, "库存不足");
             }
             book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) - 1));
-            thingService.updateThing(book);
+            bookService.updateBook(book);
             return new APIResponse(ResponeCode.SUCCESS, "创建成功");
         }else {
             return new APIResponse(ResponeCode.FAIL, "参数错误");
@@ -94,9 +94,9 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Book book = thingService.getThingById(dbBorrow.getThingId());
+            Book book = bookService.getBookById(dbBorrow.getThingId());
             book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
-            thingService.updateThing(book);
+            bookService.updateBook(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");
         }
     }
@@ -113,9 +113,9 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Book book = thingService.getThingById(dbBorrow.getThingId());
+            Book book = bookService.getBookById(dbBorrow.getThingId());
             book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
-            thingService.updateThing(book);
+            bookService.updateBook(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");
         }
     }

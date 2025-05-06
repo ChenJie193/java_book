@@ -8,7 +8,7 @@ import com.c.study.entity.Book;
 import com.c.study.entity.VisitData;
 import com.c.study.mapper.BorrowMapper;
 import com.c.study.mapper.OverviewMapper;
-import com.c.study.mapper.ThingMapper;
+import com.c.study.mapper.BookMapper;
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.*;
 public class OverViewController {
 
     @Autowired
-    ThingMapper thingMapper;
+    BookMapper bookMapper;
 
     @Autowired
     BorrowMapper borrowMapper;
@@ -80,7 +80,7 @@ public class OverViewController {
 
         // 图书总数
         QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
-        long spzs = thingMapper.selectCount(queryWrapper);
+        long spzs = bookMapper.selectCount(queryWrapper);
         map.put("spzs", spzs);
 
         long now = System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class OverViewController {
 
         // 七日新增
         queryWrapper.ge("create_time", sevenMillis);
-        long qrxz = thingMapper.selectCount(queryWrapper);
+        long qrxz = bookMapper.selectCount(queryWrapper);
         map.put("qrxz", qrxz);
 
         // 在借

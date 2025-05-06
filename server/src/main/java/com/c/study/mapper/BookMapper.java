@@ -5,7 +5,7 @@ import com.c.study.entity.Book;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ThingMapper extends BaseMapper<Book> {
-//    List<Book> getList();
-//    boolean update(Book thing);
+public interface BookMapper extends BaseMapper<Book> {
+//    List<DocBook> getList();
+//    boolean update(DocBook thing);
 }
