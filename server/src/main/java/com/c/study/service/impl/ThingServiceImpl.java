@@ -3,7 +3,7 @@ package com.c.study.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.c.study.entity.Thing;
+import com.c.study.entity.Book;
 import com.c.study.entity.ThingTag;
 import com.c.study.mapper.ThingMapper;
 import com.c.study.mapper.ThingTagMapper;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements ThingService {
+public class ThingServiceImpl extends ServiceImpl<ThingMapper, Book> implements ThingService {
     @Autowired
     ThingMapper mapper;
 
@@ -26,8 +26,8 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
     ThingTagMapper thingTagMapper;
 
     @Override
-    public List<Thing> getThingList(String keyword, String sort, String c, String tag) {
-        QueryWrapper<Thing> queryWrapper = new QueryWrapper<>();
+    public List<Book> getThingList(String keyword, String sort, String c, String tag) {
+        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
 
         // 搜索
         queryWrapper.like(StringUtils.isNotBlank(keyword), "title", keyword);
@@ -48,53 +48,53 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
             queryWrapper.eq(true, "classification_id", c);
         }
 
-        List<Thing> things = mapper.selectList(queryWrapper);
+        List<Book> books = mapper.selectList(queryWrapper);
 
         // tag筛选
         if (StringUtils.isNotBlank(tag)) {
-            List<Thing> tThings = new ArrayList<>();
+            List<Book> tBooks = new ArrayList<>();
             QueryWrapper<ThingTag> thingTagQueryWrapper = new QueryWrapper<>();
             thingTagQueryWrapper.eq("tag_id", tag);
             List<ThingTag> thingTagList = thingTagMapper.selectList(thingTagQueryWrapper);
-            for (Thing thing : things) {
+            for (Book book : books) {
                 for (ThingTag thingTag : thingTagList) {
-                    if (thing.getId().equals(thingTag.getThingId())) {
-                        tThings.add(thing);
+                    if (book.getId().equals(thingTag.getThingId())) {
+                        tBooks.add(book);
                     }
                 }
             }
-            things.clear();
-            things.addAll(tThings);
+            books.clear();
+            books.addAll(tBooks);
         }
 
         // 附加tag
-        for (Thing thing : things) {
+        for (Book book : books) {
             QueryWrapper<ThingTag> thingTagQueryWrapper = new QueryWrapper<>();
-            thingTagQueryWrapper.lambda().eq(ThingTag::getThingId, thing.getId());
+            thingTagQueryWrapper.lambda().eq(ThingTag::getThingId, book.getId());
             List<ThingTag> thingTags = thingTagMapper.selectList(thingTagQueryWrapper);
             List<Long> tags = thingTags.stream().map(ThingTag::getTagId).collect(Collectors.toList());
-            thing.setTags(tags);
+            book.setTags(tags);
         }
-        return things;
+        return books;
     }
 
     @Override
-    public void createThing(Thing thing) {
-        System.out.println(thing);
-        thing.setCreateTime(String.valueOf(System.currentTimeMillis()));
+    public void createThing(Book book) {
+        System.out.println(book);
+        book.setCreateTime(String.valueOf(System.currentTimeMillis()));
 
-        if (thing.getPv() == null) {
-            thing.setPv("0");
+        if (book.getPv() == null) {
+            book.setPv("0");
         }
-        if (thing.getScore() == null) {
-            thing.setScore("0");
+        if (book.getScore() == null) {
+            book.setScore("0");
         }
-        if (thing.getWishCount() == null) {
-            thing.setWishCount("0");
+        if (book.getWishCount() == null) {
+            book.setWishCount("0");
         }
-        mapper.insert(thing);
+        mapper.insert(book);
         // 更新tag
-        setThingTags(thing);
+        setThingTags(book);
     }
 
     @Override
@@ -103,45 +103,45 @@ public class ThingServiceImpl extends ServiceImpl<ThingMapper, Thing> implements
     }
 
     @Override
-    public void updateThing(Thing thing) {
+    public void updateThing(Book book) {
 
         // 更新tag
-        setThingTags(thing);
+        setThingTags(book);
 
-        mapper.updateById(thing);
+        mapper.updateById(book);
     }
 
     @Override
-    public Thing getThingById(String id) {
+    public Book getThingById(String id) {
         return mapper.selectById(id);
     }
 
     // 心愿数加1
     @Override
     public void addWishCount(String thingId) {
-        Thing thing = mapper.selectById(thingId);
-        thing.setWishCount(String.valueOf(Integer.parseInt(thing.getWishCount()) + 1));
-        mapper.updateById(thing);
+        Book book = mapper.selectById(thingId);
+        book.setWishCount(String.valueOf(Integer.parseInt(book.getWishCount()) + 1));
+        mapper.updateById(book);
     }
 
     // 收藏数加1
     @Override
     public void addCollectCount(String thingId) {
-        Thing thing = mapper.selectById(thingId);
-        thing.setCollectCount(String.valueOf(Integer.parseInt(thing.getCollectCount()) + 1));
-        mapper.updateById(thing);
+        Book book = mapper.selectById(thingId);
+        book.setCollectCount(String.valueOf(Integer.parseInt(book.getCollectCount()) + 1));
+        mapper.updateById(book);
     }
 
-    public void setThingTags(Thing thing) {
+    public void setThingTags(Book book) {
         // 删除tag
         Map<String, Object> map = new HashMap<>();
-        map.put("thing_id", thing.getId());
+        map.put("thing_id", book.getId());
         thingTagMapper.deleteByMap(map);
         // 新增tag
-        if (thing.getTags() != null) {
-            for (Long tag : thing.getTags()) {
+        if (book.getTags() != null) {
+            for (Long tag : book.getTags()) {
                 ThingTag thingTag = new ThingTag();
-                thingTag.setThingId(thing.getId());
+                thingTag.setThingId(book.getId());
                 thingTag.setTagId(tag);
                 thingTagMapper.insert(thingTag);
             }

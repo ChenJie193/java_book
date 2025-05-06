@@ -3,8 +3,8 @@ package com.c.study.controller;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.c.study.common.APIResponse;
 import com.c.study.common.ResponeCode;
+import com.c.study.entity.Book;
 import com.c.study.entity.Borrow;
-import com.c.study.entity.Thing;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
 import com.c.study.service.BorrowService;
@@ -57,12 +57,12 @@ public class BorrowController {
         if(StringUtils.isNotBlank(borrow.getThingId()) && StringUtils.isNotBlank(borrow.getUserId())){
             service.createBorrow(borrow);
             // 库存-1
-            Thing thing = thingService.getThingById(borrow.getThingId());
-            if(Integer.parseInt(thing.getRepertory()) <= 0){
+            Book book = thingService.getThingById(borrow.getThingId());
+            if(Integer.parseInt(book.getRepertory()) <= 0){
                 return new APIResponse(ResponeCode.FAIL, "库存不足");
             }
-            thing.setRepertory(String.valueOf(Integer.parseInt(thing.getRepertory()) - 1));
-            thingService.updateThing(thing);
+            book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) - 1));
+            thingService.updateThing(book);
             return new APIResponse(ResponeCode.SUCCESS, "创建成功");
         }else {
             return new APIResponse(ResponeCode.FAIL, "参数错误");
@@ -94,9 +94,9 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Thing thing = thingService.getThingById(dbBorrow.getThingId());
-            thing.setRepertory(String.valueOf(Integer.parseInt(thing.getRepertory()) + 1));
-            thingService.updateThing(thing);
+            Book book = thingService.getThingById(dbBorrow.getThingId());
+            book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
+            thingService.updateThing(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");
         }
     }
@@ -113,9 +113,9 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Thing thing = thingService.getThingById(dbBorrow.getThingId());
-            thing.setRepertory(String.valueOf(Integer.parseInt(thing.getRepertory()) + 1));
-            thingService.updateThing(thing);
+            Book book = thingService.getThingById(dbBorrow.getThingId());
+            book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
+            thingService.updateThing(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");
         }
     }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.c.study.common.APIResponse;
 import com.c.study.common.ResponeCode;
 import com.c.study.entity.Borrow;
-import com.c.study.entity.Thing;
+import com.c.study.entity.Book;
 import com.c.study.entity.VisitData;
 import com.c.study.mapper.BorrowMapper;
 import com.c.study.mapper.OverviewMapper;
@@ -79,7 +79,7 @@ public class OverViewController {
         Map<String, Object> map = new HashMap<>();
 
         // 图书总数
-        QueryWrapper<Thing> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
         long spzs = thingMapper.selectCount(queryWrapper);
         map.put("spzs", spzs);
 

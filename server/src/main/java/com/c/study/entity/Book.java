@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@TableName("b_thing")
-public class Thing implements Serializable {
+@TableName("tb_book")
+public class Book implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     public Long id;
     @TableField

@@ -17,6 +17,10 @@ spring:
       max-active: 3
       max-wait: 3000
 
+elasticsearch:
+  host: localhost
+  port: 9200
+
 BASE_LOCATION: D:\projects\java_book
 DB_NAME: java_book
 

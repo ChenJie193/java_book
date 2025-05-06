@@ -1,18 +1,18 @@
 package com.c.study.service;
 
 
-import com.c.study.entity.Thing;
+import com.c.study.entity.Book;
 
 import java.util.List;
 
 public interface ThingService {
-    List<Thing> getThingList(String keyword, String sort, String c, String tag);
-    void createThing(Thing thing);
+    List<Book> getThingList(String keyword, String sort, String c, String tag);
+    void createThing(Book book);
     void deleteThing(String id);
 
-    void updateThing(Thing thing);
+    void updateThing(Book book);
 
-    Thing getThingById(String id);
+    Book getThingById(String id);
 
     void addWishCount(String thingId);
 

@@ -2,7 +2,7 @@ package com.c.study.controller;
 
 import com.c.study.common.APIResponse;
 import com.c.study.common.ResponeCode;
-import com.c.study.entity.Thing;
+import com.c.study.entity.Book;
 import com.c.study.permission.Access;
 import com.c.study.permission.AccessLevel;
 import com.c.study.service.ThingService;
@@ -24,9 +24,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/thing")
-public class ThingController {
+public class BookController {
 
-    private final static Logger logger = LoggerFactory.getLogger(ThingController.class);
+    private final static Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
     ThingService service;
@@ -36,28 +36,28 @@ public class ThingController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public APIResponse list(String keyword, String sort, String c, String tag){
-        List<Thing> list =  service.getThingList(keyword, sort, c, tag);
+        List<Book> list =  service.getThingList(keyword, sort, c, tag);
 
         return new APIResponse(ResponeCode.SUCCESS, "查询成功", list);
     }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public APIResponse detail(String id){
-        Thing thing =  service.getThingById(id);
+        Book book =  service.getThingById(id);
 
-        return new APIResponse(ResponeCode.SUCCESS, "查询成功", thing);
+        return new APIResponse(ResponeCode.SUCCESS, "查询成功", book);
     }
 
     @Access(level = AccessLevel.ADMIN)
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @Transactional
-    public APIResponse create(Thing thing) throws IOException {
-        String url = saveThing(thing);
+    public APIResponse create(Book book) throws IOException {
+        String url = saveThing(book);
         if(!StringUtils.isEmpty(url)) {
-            thing.cover = url;
+            book.cover = url;
         }
 
-        service.createThing(thing);
+        service.createThing(book);
         return new APIResponse(ResponeCode.SUCCESS, "创建成功");
     }
 
@@ -76,19 +76,19 @@ public class ThingController {
     @Access(level = AccessLevel.ADMIN)
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @Transactional
-    public APIResponse update(Thing thing) throws IOException {
-        System.out.println(thing);
-        String url = saveThing(thing);
+    public APIResponse update(Book book) throws IOException {
+        System.out.println(book);
+        String url = saveThing(book);
         if(!StringUtils.isEmpty(url)) {
-            thing.cover = url;
+            book.cover = url;
         }
 
-        service.updateThing(thing);
+        service.updateThing(book);
         return new APIResponse(ResponeCode.SUCCESS, "更新成功");
     }
 
-    public String saveThing(Thing thing) throws IOException {
-        MultipartFile file = thing.getImageFile();
+    public String saveThing(Book book) throws IOException {
+        MultipartFile file = book.getImageFile();
         String newFileName = null;
         if(file !=null && !file.isEmpty()) {
 
@@ -104,7 +104,7 @@ public class ThingController {
             file.transferTo(destFile);
         }
         if(!StringUtils.isEmpty(newFileName)) {
-            thing.cover = newFileName;
+            book.cover = newFileName;
         }
         return newFileName;
     }

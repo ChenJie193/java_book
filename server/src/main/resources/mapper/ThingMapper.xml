@@ -3,7 +3,7 @@
 <mapper namespace="com.c.study.mapper.ThingMapper">
 
 
-    <select id="getList" resultType="com.c.study.entity.Thing">
+    <select id="getList" resultType="com.c.study.entity.Book">
         select * from b_thing;
     </select>
 
