@@ -23,4 +23,10 @@ public class DocBook implements Serializable {
     private String author;
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String press;
+    @Field(type = FieldType.Text)
+    private String cover;
+    @Field(type = FieldType.Long)
+    private Long classificationId;
+    @Field(type = FieldType.Date)
+    private String createTime;
 }

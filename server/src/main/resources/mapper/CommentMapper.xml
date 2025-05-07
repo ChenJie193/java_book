@@ -5,16 +5,16 @@
     <select id="getList" resultType="com.c.study.entity.Comment">
         select A.*, B.username, C.title
         from b_comment as A
-        join b_user as B on (A.user_id=B.id)
-        join b_thing as C on (A.thing_id=C.id)
+        join tb_user as B on (A.user_id=B.id)
+        join tb_book as C on (A.thing_id=C.id)
         order by A.comment_time desc;
     </select>
 
     <select id="selectThingCommentList" parameterType="map" resultType="com.c.study.entity.Comment">
         select A.*, B.username, C.title
         from b_comment as A
-                 join b_user as B on (A.user_id=B.id)
-                 join b_thing as C on (A.thing_id=C.id)
+                 join tb_user as B on (A.user_id=B.id)
+                 join tb_book as C on (A.thing_id=C.id)
         <if test="thingId != null">
             where A.thing_id=#{thingId}
         </if>
@@ -29,8 +29,8 @@
     <select id="selectUserCommentList" parameterType="map" resultType="com.c.study.entity.Comment">
         select A.*, B.username, C.title, C.cover
         from b_comment as A
-        join b_user as B on (A.user_id=B.id)
-        join b_thing as C on (A.thing_id=C.id)
+        join tb_user as B on (A.user_id=B.id)
+        join tb_book as C on (A.thing_id=C.id)
         <if test="userId != null">
             where A.user_id=#{userId}
         </if>

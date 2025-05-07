@@ -14,16 +14,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/book")
@@ -41,7 +37,7 @@ public class BookController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public APIResponse list(String keyword, String sort, String c, String tag){
-        List<Book> list =  service.getThingList(keyword, sort, c, tag);
+        List<Book> list =  service.getBookList(keyword, sort, c, tag);
 
         return new APIResponse(ResponeCode.SUCCESS, "查询成功", list);
     }
@@ -57,11 +53,7 @@ public class BookController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @Transactional
     public APIResponse create(Book book) throws IOException {
-        DocBook docBook = new DocBook();
-
         service.createBook(book);
-        BeanUtils.copyProperties(book,docBook);
-        DocBook save = bookRepository.save(docBook);
         return new APIResponse(ResponeCode.SUCCESS, "创建成功");
     }
 
@@ -83,10 +75,6 @@ public class BookController {
     public APIResponse update(Book book) throws IOException {
         DocBook docBook = new DocBook();
         System.out.println(book);
-//        String url = saveBook(book);
-//        if(!StringUtils.isEmpty(url)) {
-//            book.setCover(url);
-//        }
 
         service.updateBook(book);
         BeanUtils.copyProperties(book, docBook);

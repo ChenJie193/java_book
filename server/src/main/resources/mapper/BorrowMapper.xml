@@ -4,17 +4,17 @@
 
     <select id="getList" resultType="com.c.study.entity.Borrow">
         select A.*, B.username, C.title
-        from b_borrow as A
-        join b_user as B on (A.user_id=B.id)
-        join b_thing as C on (A.thing_id=C.id)
+        from tb_borrow as A
+        join tb_user as B on (A.user_id=B.id)
+        join tb_book as C on (A.book_id=C.id)
         order by A.borrow_time desc;
     </select>
 
     <select id="getUserBorrowList" resultType="com.c.study.entity.Borrow">
         select A.*, B.username, C.title, C.cover
-        from b_borrow as A
-                 join b_user as B on (A.user_id=B.id)
-                 join b_thing as C on (A.thing_id=C.id)
+        from tb_borrow as A
+                 join tb_user as B on (A.user_id=B.id)
+                 join tb_book as C on (A.book_id=C.id)
         where 2>1
         <if test="userId != null">
             and A.user_id=#{userId}

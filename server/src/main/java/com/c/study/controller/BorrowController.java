@@ -54,10 +54,10 @@ public class BorrowController {
         borrow.setExpectTime(String.valueOf(expectTime));
         borrow.setStatus("1");
         borrow.setHasDelayed("0");
-        if(StringUtils.isNotBlank(borrow.getThingId()) && StringUtils.isNotBlank(borrow.getUserId())){
+        if(StringUtils.isNotBlank(borrow.getBookId()) && StringUtils.isNotBlank(borrow.getUserId())){
             service.createBorrow(borrow);
             // 库存-1
-            Book book = bookService.getBookById(borrow.getThingId());
+            Book book = bookService.getBookById(borrow.getBookId());
             if(Integer.parseInt(book.getRepertory()) <= 0){
                 return new APIResponse(ResponeCode.FAIL, "库存不足");
             }
@@ -94,7 +94,7 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Book book = bookService.getBookById(dbBorrow.getThingId());
+            Book book = bookService.getBookById(dbBorrow.getBookId());
             book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
             bookService.updateBook(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");
@@ -113,7 +113,7 @@ public class BorrowController {
             dbBorrow.setReturnTime(String.valueOf(System.currentTimeMillis()));
             service.updateBorrow(dbBorrow);
             // 库存+1
-            Book book = bookService.getBookById(dbBorrow.getThingId());
+            Book book = bookService.getBookById(dbBorrow.getBookId());
             book.setRepertory(String.valueOf(Integer.parseInt(book.getRepertory()) + 1));
             bookService.updateBook(book);
             return new APIResponse(ResponeCode.SUCCESS, "操作成功");

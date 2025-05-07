@@ -60,7 +60,7 @@
                   <a-input placeholder="请输入" v-model:value="modal.form.title" />
                 </a-form-item>
               </a-col>
-              <a-col span="12">
+              <a-col span="24">
                 <a-form-item label="分类" name="classificationId">
                   <a-select
                     placeholder="请选择"
@@ -70,7 +70,12 @@
                     v-model:value="modal.form.classificationId" />
                 </a-form-item>
               </a-col>
-              <a-col span="12">
+              <a-col span="24">
+                <a-form-item label="封面图片">
+                  <a-input placeholder="请输入" v-model:value="modal.form.cover" />
+                </a-form-item>
+              </a-col>
+              <!-- <a-col span="12">
                 <a-form-item label="标签">
                   <a-select mode="multiple" placeholder="请选择" allowClear v-model:value="modal.form.tags">
                     <template v-for="item in modal.tagData">
@@ -78,8 +83,8 @@
                     </template>
                   </a-select>
                 </a-form-item>
-              </a-col>
-              <a-col span="24">
+              </a-col> -->
+              <!-- <a-col span="24">
                 <a-form-item label="封面">
                   <a-upload-dragger
                     name="file"
@@ -101,7 +106,7 @@
                     </p>
                   </a-upload-dragger>
                 </a-form-item>
-              </a-col>
+              </a-col> -->
 
               <a-col span="24">
                 <a-form-item label="图书简介">
@@ -198,6 +203,11 @@ const columns = reactive([
     title: '作者',
     dataIndex: 'author',
     key: 'author'
+  },
+  {
+    title: '图书封面',
+    dataIndex: 'cover',
+    key: 'cover'
   },
   {
     title: 'isbn',
@@ -379,11 +389,7 @@ const handleEdit = (record: any) => {
       modal.form[key] = record[key];
     }
   }
-  if(modal.form.cover) {
-    // modal.form.coverUrl = BASE_URL + '/api/staticfiles/image/' + modal.form.cover
-    modal.form.coverUrl = modal.form.cover
-    modal.form.cover = undefined
-  }
+
 };
 
 const confirmDelete = (record: any) => {
@@ -437,6 +443,7 @@ const handleOk = () => {
         if (modal.form.imageFile) {
           formData.append('imageFile', modal.form.imageFile)
         }
+        formData.append('cover', modal.form.cover || '')
         formData.append('description', modal.form.description || '')
         formData.append('author', modal.form.author || '')
         formData.append('translator', modal.form.translator || '')

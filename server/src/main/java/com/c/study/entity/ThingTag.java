@@ -9,7 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("b_thing_tag")
+@TableName("tb_book_tag")
 public class ThingTag implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     public Long id;

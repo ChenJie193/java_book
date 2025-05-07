@@ -3,83 +3,69 @@ package com.c.study.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.c.study.document.DocBook;
 import com.c.study.entity.Book;
 import com.c.study.entity.ThingTag;
 import com.c.study.mapper.BookMapper;
 import com.c.study.mapper.ThingTagMapper;
+import com.c.study.repository.BookRepository;
 import com.c.study.service.BookService;
+import org.apache.lucene.util.QueryBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements BookService {
     @Autowired
-    BookMapper mapper;
-
+    private BookMapper mapper;
     @Autowired
-    ThingTagMapper thingTagMapper;
+    private ThingTagMapper thingTagMapper;
+    @Autowired
+    private BookRepository bookRepository;
+    @Autowired
+    private ElasticsearchRestTemplate restTemplate;
 
     @Override
-    public List<Book> getThingList(String keyword, String sort, String c, String tag) {
-        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
-
-        // 搜索
-        queryWrapper.like(StringUtils.isNotBlank(keyword), "title", keyword);
-
-        // 排序
-        if (StringUtils.isNotBlank(sort)) {
-            if (sort.equals("recent")) {
-                queryWrapper.orderBy(true, false, "create_time");
-            } else if (sort.equals("hot") || sort.equals("recommend")) {
-                queryWrapper.orderBy(true, false, "pv");
-            }
-        }else {
-            queryWrapper.orderBy(true, false, "create_time");
+    public List<Book> getBookList(String keyword, String sort, String c, String tag) {
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        if(Objects.nonNull(keyword)){
+            builder.should(QueryBuilders.multiMatchQuery(keyword,"title","description","author","author","press"));
         }
-
-        // 根据分类筛选
-        if (StringUtils.isNotBlank(c) && !c.equals("-1")) {
-            queryWrapper.eq(true, "classification_id", c);
+        if(Objects.nonNull(c) && !c.equals("-1")){
+            builder.must(QueryBuilders.termQuery("classificationId",c));
         }
-
-        List<Book> books = mapper.selectList(queryWrapper);
-
-        // tag筛选
-        if (StringUtils.isNotBlank(tag)) {
-            List<Book> tBooks = new ArrayList<>();
-            QueryWrapper<ThingTag> thingTagQueryWrapper = new QueryWrapper<>();
-            thingTagQueryWrapper.eq("tag_id", tag);
-            List<ThingTag> thingTagList = thingTagMapper.selectList(thingTagQueryWrapper);
-            for (Book book : books) {
-                for (ThingTag thingTag : thingTagList) {
-                    if (book.getId().equals(thingTag.getThingId())) {
-                        tBooks.add(book);
-                    }
-                }
-            }
-            books.clear();
-            books.addAll(tBooks);
+        if(Objects.equals(c,"-1")){
+            builder.must(QueryBuilders.matchAllQuery());
         }
-
-        // 附加tag
-        for (Book book : books) {
-            QueryWrapper<ThingTag> thingTagQueryWrapper = new QueryWrapper<>();
-            thingTagQueryWrapper.lambda().eq(ThingTag::getThingId, book.getId());
-            List<ThingTag> thingTags = thingTagMapper.selectList(thingTagQueryWrapper);
-            List<Long> tags = thingTags.stream().map(ThingTag::getTagId).collect(Collectors.toList());
-            book.setTags(tags);
-        }
+        FieldSortBuilder order = SortBuilders.fieldSort("createTime").order(SortOrder.DESC);
+        NativeSearchQueryBuilder nativeBuilder = new NativeSearchQueryBuilder();
+        NativeSearchQuery build = nativeBuilder.withQuery(builder).withSort(order).build();
+        SearchHits<DocBook> search = restTemplate.search(build, DocBook.class);
+        List<DocBook> collect = search.stream().map(n -> n.getContent()).collect(Collectors.toList());
+        List<Book> books = collect.stream().map(i -> {
+            Book book = new Book();
+            BeanUtils.copyProperties(i, book);
+            return book;
+        }).collect(Collectors.toList());
         return books;
     }
 
     @Override
     public void createBook(Book book) {
+        DocBook docBook = new DocBook();
         System.out.println(book);
         book.setCreateTime(String.valueOf(System.currentTimeMillis()));
 
@@ -93,6 +79,8 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
             book.setWishCount("0");
         }
         mapper.insert(book);
+        BeanUtils.copyProperties(book,docBook);
+        DocBook save = bookRepository.save(docBook);
         // 更新tag
         setThingTags(book);
     }

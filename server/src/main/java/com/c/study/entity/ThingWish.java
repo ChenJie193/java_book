@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 
 @Data
-@TableName("b_thing_wish")
+@TableName("tb_book_wish")
 public class ThingWish implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     public Long id;

@@ -22,7 +22,7 @@ public class Borrow implements Serializable {
     @TableField
     public String expectTime;
     @TableField
-    public String thingId;
+    public String bookId;
     @TableField
     public String userId;
     @TableField
